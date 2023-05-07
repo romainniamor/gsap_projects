@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>button_effect</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="emojis-box"></div>
+      <button class="btn">PRESS EAT</button>
+    </div>
+  </body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"
+    integrity="sha512-cOH8ndwGgPo+K7pTvMrqYbmI8u8k6Sho3js0gOqVWTmQMlLIi6TbqGWRTpf1ga8ci9H3iPsvDLr4X7xwhC/+DQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+</html>
+<style>
+  *,
+  ::after,
+  ::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow: hidden;
+    background: rgb(32, 32, 32);
+  }
+
+  .container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+  }
+
+  .btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    z-index: -1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    box-shadow: 0 6px 0 rgb(164, 0, 0);
+    color: yellow;
+    background: red;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .btn:active {
+    margin-top: 6px;
+    box-shadow: 0 0px 0 rgb(150, 150, 150);
+  }
+
+  .emojis-box {
+    position: relative;
+    perspective: 1000px;
+  }
+
+  .emojis-box div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    user-select: none;
+  }
+</style>
+<script>
+  const emojisBox = document.querySelector(".emojis-box");
+  const btn = document.querySelector(".btn");
+  const emojis = ["🍟", "🍔", "🍦", "🌭"];
+
+  btn.addEventListener("click", pop);
+  function pop() {
+    for (i = 0; i < 60; i++) {
+      const emoPop = document.createElement("div");
+      emoPop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      emojisBox.appendChild(emoPop);
+    }
+    animate();
+  }
+
+  function animate() {
+    const TLCONF = gsap.timeline();
+
+    TLCONF.to(".emojis-box div", {
+      y: "random(-120, 120)",
+      x: "random(-120, 120)",
+      z: "random(-500, 1000)",
+      rotation: "random(-90, 90)",
+      duration: 1,
+    });
+    TLCONF.to(".emojis-box div", { autoAlpha: 0, duration: 0.4 }, "-=0.2");
+    TLCONF.add(() => (emojisBox.innerHTML = ""));
+  }
+</script>
